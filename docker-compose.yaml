@@ -1,0 +1,27 @@
+---
+name: kara-dav
+services:
+  dev:
+    build:
+      context: .
+      target: spc-builder
+    entrypoint: sh
+  app:
+    container_name: kara-dav
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+      - ./config.local.php:/var/www/karadav/config.local.php
+    deploy:
+      resources:
+        limits:
+          memory: 64M       # php-fpm ondemand: near 0 MB when idle, ~20 MB per active worker
+        reservations:
+          memory: 16M
+
+# First run:
+#   docker compose up -d
+#   docker compose exec app php /var/www/karadav/init.php --user admin --password secret --admin
