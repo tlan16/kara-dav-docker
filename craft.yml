@@ -1,5 +1,5 @@
 ---
-php-version: 8.4
+php-version: 8.5
 extensions: "sqlite3,simplexml,session"
 sapi:
   - cli
@@ -7,4 +7,4 @@ debug: true
 download-options:
   prefer-pre-built: true
 build-options:
-  with-upx-pack: false
+  with-upx-pack: true

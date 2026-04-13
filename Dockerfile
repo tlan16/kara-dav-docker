@@ -21,6 +21,7 @@ RUN apk add --no-cache \
         m4 \
         pkgconfig \
         re2c \
+        upx \
         wget \
         xz \
         php composer php-tokenizer php-dom php-simplexml \
@@ -36,6 +37,7 @@ RUN composer install --no-dev --no-scripts --no-interaction --optimize-autoloade
 ENV PATH="/static-php-cli/bin:$PATH"
 
 ADD craft.yml craft.yml
+RUN spc install-pkg upx
 
 # Set env to reduce mem usage during build
 # Mainly because sqlite requires a lot of memory to build, and tent to run in to OOM error
@@ -73,7 +75,8 @@ COPY --from=ghcr.io/tarampampam/microcheck:1 /bin/httpcheck /bin/httpcheck
 COPY --from=spc-builder /static-php-cli/buildroot/bin/php /usr/local/bin/php
 COPY --from=source /app /app
 
-CMD ["php", "-S", "0.0.0.0:8080", "/app/www/_router.php"]
+WORKDIR /app
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/app/www", "/app/www/_router.php"]
 
 EXPOSE 8080
 
