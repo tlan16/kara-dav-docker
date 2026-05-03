@@ -1,6 +1,6 @@
 ---
 php-version: 8.5
-extensions: "sqlite3,simplexml,session"
+extensions: "sqlite3,simplexml,session,fileinfo,zlib"
 sapi:
   - cli
 debug: true
